@@ -8,8 +8,22 @@ class Route{
 
         self::$validRoutes[] = $route;
 
-        if ( $_GET['url'] == $route ){
-            $function->__invoke();
+        $url = $_GET['url'];
+
+        $matches = [];
+
+        $firstChar = substr( $route, 0, 1);
+
+
+        if ( $firstChar === '/' ){
+            if ( preg_match($route,$url,$matches) ){
+                $function->__invoke( $matches );
+            }
+        }
+        else{
+            if ( $route === $url ){
+                $function->__invoke( [$url] );
+            }
         }
 
     }
